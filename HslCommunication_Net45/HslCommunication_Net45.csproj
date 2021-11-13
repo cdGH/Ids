@@ -1,0 +1,676 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7F8029DA-1B94-4B1D-B91F-5B21DBF2F3A2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HslCommunication</RootNamespace>
+    <AssemblyName>HslCommunication</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NET451</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\HslCommunication.xml</DocumentationFile>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NET451</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\HslCommunication.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>HslCommunication.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Algorithms\Fourier\FFTFilter.cs" />
+    <Compile Include="Algorithms\PID\PIDHelper.cs" />
+    <Compile Include="Algorithms\PID\PidMode.cs" />
+    <Compile Include="Authorization.cs" />
+    <Compile Include="BasicFramework\SharpList.cs" />
+    <Compile Include="Algorithms\ConnectPool\ConnectPool.cs" />
+    <Compile Include="Algorithms\ConnectPool\IConnector.cs" />
+    <Compile Include="Algorithms\Fourier\FFTHelper.cs" />
+    <Compile Include="BasicFramework\FormAuthorize.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BasicFramework\FormAuthorize.designer.cs">
+      <DependentUpon>FormAuthorize.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BasicFramework\FormPopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BasicFramework\FormPopup.designer.cs">
+      <DependentUpon>FormPopup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BasicFramework\FormPortraitSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BasicFramework\FormPortraitSelect.Designer.cs">
+      <DependentUpon>FormPortraitSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BasicFramework\FormSupport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BasicFramework\FormSupport.Designer.cs">
+      <DependentUpon>FormSupport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BasicFramework\SoftAnimation.cs" />
+    <Compile Include="BasicFramework\SoftAuthorize.cs" />
+    <Compile Include="BasicFramework\SoftBaseClass.cs" />
+    <Compile Include="BasicFramework\SoftBasic.cs" />
+    <Compile Include="BasicFramework\SoftBuffer.cs" />
+    <Compile Include="BasicFramework\SoftCache.cs" />
+    <Compile Include="BasicFramework\SoftException.cs" />
+    <Compile Include="BasicFramework\SoftMail.cs" />
+    <Compile Include="BasicFramework\SoftMsgQueue.cs" />
+    <Compile Include="BasicFramework\SoftNumerical.cs" />
+    <Compile Include="BasicFramework\SoftPainting.cs" />
+    <Compile Include="BasicFramework\SoftSecurity.cs" />
+    <Compile Include="BasicFramework\SoftSqlOperate.cs" />
+    <Compile Include="BasicFramework\SoftVersion.cs" />
+    <Compile Include="BasicFramework\SoftZipped.cs" />
+    <Compile Include="CNC\Fanuc\CNCFanucSeriesMessage.cs" />
+    <Compile Include="CNC\Fanuc\CNCRunStatus.cs" />
+    <Compile Include="CNC\Fanuc\CNCWorkMode.cs" />
+    <Compile Include="CNC\Fanuc\CutterInfo.cs" />
+    <Compile Include="CNC\Fanuc\FanucSeries0i.cs" />
+    <Compile Include="CNC\Fanuc\SysAlarm.cs" />
+    <Compile Include="CNC\Fanuc\SysAllCoors.cs" />
+    <Compile Include="CNC\Fanuc\SysStatusInfo.cs" />
+    <Compile Include="Controls\UserBottle.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserBottle.Designer.cs">
+      <DependentUpon>UserBottle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UserButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserButton.designer.cs">
+      <DependentUpon>UserButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UserClock.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserClock.designer.cs">
+      <DependentUpon>UserClock.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UserCurve.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserCurve.Designer.cs">
+      <DependentUpon>UserCurve.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UserDrum.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserDrum.Designer.cs">
+      <DependentUpon>UserDrum.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UserGaugeChart.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserGaugeChart.Designer.cs">
+      <DependentUpon>UserGaugeChart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UserLantern.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserLantern.Designer.cs">
+      <DependentUpon>UserLantern.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UserPieChart.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserPieChart.Designer.cs">
+      <DependentUpon>UserPieChart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UserPipe.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserPipe.Designer.cs">
+      <DependentUpon>UserPipe.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UserSwitch.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserSwitch.Designer.cs">
+      <DependentUpon>UserSwitch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\UserVerticalProgress.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UserVerticalProgress.Designer.cs">
+      <DependentUpon>UserVerticalProgress.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Address\CnetAddressData.cs" />
+    <Compile Include="Core\Address\DeviceAddressBase.cs" />
+    <Compile Include="Core\Address\DeviceAddressDataBase.cs" />
+    <Compile Include="Core\Address\FatekProgramAddress.cs" />
+    <Compile Include="Core\Address\FujiCommandSettingTypeAddress.cs" />
+    <Compile Include="Core\Address\FujiSPBAddress.cs" />
+    <Compile Include="Core\Address\FujiSPHAddress.cs" />
+    <Compile Include="Core\Address\GeSRTPAddress.cs" />
+    <Compile Include="Core\Address\McAddressData.cs" />
+    <Compile Include="Core\Address\OmronFinsAddress.cs" />
+    <Compile Include="Core\Address\S7AddressData.cs" />
+    <Compile Include="Core\Address\YokogawaLinkAddress.cs" />
+    <Compile Include="Core\File\GroupFileInfo.cs" />
+    <Compile Include="Core\File\MqttFileInfo.cs" />
+    <Compile Include="Core\File\MqttFileMonitor.cs" />
+    <Compile Include="Core\File\MqttFileMonitorItem.cs" />
+    <Compile Include="Core\IMessage\AdsNetMessage.cs" />
+    <Compile Include="Core\IMessage\AlienMessage.cs" />
+    <Compile Include="Core\IMessage\AllenBradleyMessage.cs" />
+    <Compile Include="Core\IMessage\AllenBradleySLCMessage.cs" />
+    <Compile Include="Core\IMessage\DcsNanJingAutoMessage.cs" />
+    <Compile Include="Core\IMessage\DLT645Message.cs" />
+    <Compile Include="Core\IMessage\EFORTMessage.cs" />
+    <Compile Include="Core\IMessage\EFORTMessagePrevious.cs" />
+    <Compile Include="Core\IMessage\FanucRobotMessage.cs" />
+    <Compile Include="Core\IMessage\FetchWriteMessage.cs" />
+    <Compile Include="Core\IMessage\FinsMessage.cs" />
+    <Compile Include="Core\IMessage\FujiCommandSettingTypeMessage.cs" />
+    <Compile Include="Core\IMessage\FujiSPBMessage.cs" />
+    <Compile Include="Core\IMessage\FujiSPHMessage.cs" />
+    <Compile Include="Core\IMessage\GeSRTPMessage.cs" />
+    <Compile Include="Core\IMessage\HslMessage.cs" />
+    <Compile Include="Core\IMessage\INetMessage.cs" />
+    <Compile Include="Core\IMessage\KukaVarProxyMessage.cs" />
+    <Compile Include="Core\IMessage\LsisFastEnetMessage.cs" />
+    <Compile Include="Core\IMessage\MelsecA1EAsciiMessage.cs" />
+    <Compile Include="Core\IMessage\MelsecA1EBinaryMessage.cs" />
+    <Compile Include="Core\IMessage\MelsecQnA3EAsciiMessage.cs" />
+    <Compile Include="Core\IMessage\MelsecQnA3EBinaryMessage.cs" />
+    <Compile Include="Core\IMessage\MemobusMessage.cs" />
+    <Compile Include="Core\IMessage\ModbusTcpMessage.cs" />
+    <Compile Include="Core\IMessage\OpenProtocolMessage.cs" />
+    <Compile Include="Core\IMessage\S7Message.cs" />
+    <Compile Include="Core\IMessage\SAMMessage.cs" />
+    <Compile Include="Core\IMessage\YokogawaLinkBinaryMessage.cs" />
+    <Compile Include="Core\Net\ClassNetHandle.cs" />
+    <Compile Include="Core\Net\CommunicationProtocol.cs" />
+    <Compile Include="Core\Net\IReadWriteDevice.cs" />
+    <Compile Include="Core\Net\IReadWriteNet.cs" />
+    <Compile Include="Core\Net\IRobotNet.cs" />
+    <Compile Include="Core\Net\NetSupport.cs" />
+    <Compile Include="Core\Net\NetworkBase\NetworkAlienClient.cs" />
+    <Compile Include="Core\Net\NetworkBase\NetworkAuthenticationServerBase.cs" />
+    <Compile Include="Core\Net\NetworkBase\NetworkBase.cs" />
+    <Compile Include="Core\Net\NetworkBase\NetworkDataServerBase.cs" />
+    <Compile Include="Core\Net\NetworkBase\NetworkDeviceBase.cs" />
+    <Compile Include="Core\Net\NetworkBase\NetworkDoubleBase.cs" />
+    <Compile Include="Core\Net\NetworkBase\NetworkFileServerBase.cs" />
+    <Compile Include="Core\Net\NetworkBase\NetworkUdpServerBase.cs" />
+    <Compile Include="Core\Net\NetworkBase\NetworkServerBase.cs" />
+    <Compile Include="Core\Net\NetworkBase\NetworkUdpBase.cs" />
+    <Compile Include="Core\Net\NetworkBase\NetworkUdpDeviceBase.cs" />
+    <Compile Include="Core\Net\NetworkBase\NetworkWebApiBase.cs" />
+    <Compile Include="Core\Net\NetworkBase\NetworkWebApiDevice.cs" />
+    <Compile Include="Core\Net\NetworkBase\NetworkWebApiRobotBase.cs" />
+    <Compile Include="Core\Net\NetworkBase\NetworkXBase.cs" />
+    <Compile Include="Core\Net\ReadWriteNetHelper.cs" />
+    <Compile Include="Core\Net\StateOne\AlienSession.cs" />
+    <Compile Include="Core\Net\StateOne\AppSession.cs" />
+    <Compile Include="Core\Net\StateOne\AsyncStateSend.cs" />
+    <Compile Include="Core\Net\StateOne\FileStateObject.cs" />
+    <Compile Include="Core\Net\StateOne\StateObject.cs" />
+    <Compile Include="Core\Net\StateOne\StateOneBase.cs" />
+    <Compile Include="Core\Reflection\HslAddressAttribute.cs" />
+    <Compile Include="Core\Reflection\HslMqttApiAttribute.cs" />
+    <Compile Include="Core\Reflection\HslMqttPermissionAttribute.cs" />
+    <Compile Include="Core\Reflection\HslRedisAttribute.cs" />
+    <Compile Include="Core\Reflection\HslReflectionHelper.cs" />
+    <Compile Include="Core\Security\AesCryptography.cs" />
+    <Compile Include="Core\Security\DesCryptography.cs" />
+    <Compile Include="Core\Security\ICryptography.cs" />
+    <Compile Include="Core\Security\RSAHelper.cs" />
+    <Compile Include="Core\Security\Security.cs" />
+    <Compile Include="Core\Thread\ThreadLock.cs" />
+    <Compile Include="Core\Transfer\ByteTransformBase.cs" />
+    <Compile Include="Core\Transfer\ByteTransformHelper.cs" />
+    <Compile Include="Core\Transfer\DataFormat.cs" />
+    <Compile Include="Core\Transfer\IByteTransform.cs" />
+    <Compile Include="Core\Transfer\RegularByteTransform.cs" />
+    <Compile Include="Core\Transfer\ReverseBytesTransform.cs" />
+    <Compile Include="Core\Transfer\ReverseWordTransform.cs" />
+    <Compile Include="Core\Types\CertificateDegree.cs" />
+    <Compile Include="Core\Types\HslExtension.cs" />
+    <Compile Include="Core\Types\HslHelper.cs" />
+    <Compile Include="Core\Types\HslPieItem.cs" />
+    <Compile Include="Core\Types\HslTimeOut.cs" />
+    <Compile Include="Core\Types\IDataTransfer.cs" />
+    <Compile Include="Core\Types\ISessionContext.cs" />
+    <Compile Include="Core\Types\OperateResult.cs" />
+    <Compile Include="Core\Types\RemoteCloseException.cs" />
+    <Compile Include="Core\Types\SessionContext.cs" />
+    <Compile Include="Core\Types\ValueLimit.cs" />
+    <Compile Include="DCS\DcsNanJingAuto.cs" />
+    <Compile Include="DTU\DTUServer.cs" />
+    <Compile Include="DTU\DTUSettingType.cs" />
+    <Compile Include="Enthernet\ComplexNet\NetComplexClient.cs" />
+    <Compile Include="Enthernet\ComplexNet\NetComplexServer.cs" />
+    <Compile Include="Enthernet\DeviceNet\ClassDeviceNet.cs" />
+    <Compile Include="Enthernet\DeviceNet\DeviceState.cs" />
+    <Compile Include="Enthernet\FileNet\AdvancedFileServer.cs" />
+    <Compile Include="Core\File\FileBaseInfo.cs" />
+    <Compile Include="Enthernet\FileNet\FileClientBase.cs" />
+    <Compile Include="Core\File\FileMarkId.cs" />
+    <Compile Include="Core\File\GroupFileContainer.cs" />
+    <Compile Include="Core\File\GroupFileItem.cs" />
+    <Compile Include="Enthernet\FileNet\IntegrationFileClient.cs" />
+    <Compile Include="Enthernet\FileNet\UltimateFileServer.cs" />
+    <Compile Include="Enthernet\HttpServer\HttpServer.cs" />
+    <Compile Include="Enthernet\Plain\NetPlainSocket.cs" />
+    <Compile Include="Enthernet\PushNet\AppPushSession.cs" />
+    <Compile Include="Enthernet\PushNet\NetPushClient.cs" />
+    <Compile Include="Enthernet\PushNet\NetPushServer.cs" />
+    <Compile Include="Enthernet\PushNet\PushGroupClient.cs" />
+    <Compile Include="Enthernet\Redis\IRedisConnector.cs" />
+    <Compile Include="Enthernet\Redis\RedisClientPool.cs" />
+    <Compile Include="Enthernet\Redis\RedisHelper.cs" />
+    <Compile Include="Enthernet\Redis\RedisSubscribe.cs" />
+    <Compile Include="Enthernet\SimplifyNet\NetSimplifyClient.cs" />
+    <Compile Include="Enthernet\SimplifyNet\NetSimplifyServer.cs" />
+    <Compile Include="Enthernet\SoftUpdateNet\FileInfoExtension.cs" />
+    <Compile Include="Enthernet\SoftUpdateNet\NetSoftUpdateServer.cs" />
+    <Compile Include="Enthernet\UdpNet\NetUdpClient.cs" />
+    <Compile Include="Enthernet\UdpNet\NetUdpServer.cs" />
+    <Compile Include="Instrument\Delixi\DTSU6606Serial.cs" />
+    <Compile Include="Instrument\Delixi\ElectricalParameters.cs" />
+    <Compile Include="Instrument\DLT\DLT645.cs" />
+    <Compile Include="Instrument\DLT\DLT645OverTcp.cs" />
+    <Compile Include="Instrument\DLT\DLTControl.cs" />
+    <Compile Include="Instrument\DLT\DLTTransform.cs" />
+    <Compile Include="Instrument\Light\ShineInLightSourceController.cs" />
+    <Compile Include="Instrument\RKC\Helper\TemperatureControllerHelper.cs" />
+    <Compile Include="Instrument\RKC\TemperatureController.cs" />
+    <Compile Include="Instrument\RKC\TemperatureControllerOverTcp.cs" />
+    <Compile Include="Instrument\Temperature\DAM3601.cs" />
+    <Compile Include="Language\DefaultLanguage.cs" />
+    <Compile Include="Language\English.cs" />
+    <Compile Include="LogNet\Core\ILogNet.cs" />
+    <Compile Include="LogNet\Core\LogBase.cs" />
+    <Compile Include="LogNet\Core\LogPathBase.cs" />
+    <Compile Include="LogNet\Core\LogStatisticsBase.cs" />
+    <Compile Include="LogNet\Core\Types.cs" />
+    <Compile Include="LogNet\LogNetManagment.cs" />
+    <Compile Include="LogNet\Logs\LogNetDateTime.cs" />
+    <Compile Include="LogNet\Logs\LogNetFileSize.cs" />
+    <Compile Include="LogNet\Logs\LogNetSingle.cs" />
+    <Compile Include="LogNet\Logs\LogStatistics.cs" />
+    <Compile Include="LogNet\Logs\LogStatisticsDict.cs" />
+    <Compile Include="LogNet\Logs\LogValueLimit.cs" />
+    <Compile Include="LogNet\Logs\LogValueLimitDict.cs" />
+    <Compile Include="LogNet\View\FormLogNetView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LogNet\View\FormLogNetView.Designer.cs">
+      <DependentUpon>FormLogNetView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LogNet\View\LogNetAnalysisControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LogNet\View\LogNetAnalysisControl.Designer.cs">
+      <DependentUpon>LogNetAnalysisControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Address\ModbusAddress.cs" />
+    <Compile Include="ModBus\IModbus.cs" />
+    <Compile Include="ModBus\ModbusAscii.cs" />
+    <Compile Include="ModBus\ModbusHelper.cs" />
+    <Compile Include="ModBus\ModbusInfo.cs" />
+    <Compile Include="ModBus\ModBusMonitorAddress.cs" />
+    <Compile Include="ModBus\ModbusRtu.cs" />
+    <Compile Include="ModBus\ModbusRtuOverTcp.cs" />
+    <Compile Include="ModBus\ModbusTcpNet.cs" />
+    <Compile Include="ModBus\ModbusTcpServer.cs" />
+    <Compile Include="ModBus\ModbusUdpNet.cs" />
+    <Compile Include="ModBus\MonitorAddress.cs" />
+    <Compile Include="MQTT\IMqttSyncConnector.cs" />
+    <Compile Include="MQTT\MqttApplicationMessage.cs" />
+    <Compile Include="MQTT\MqttClient.cs" />
+    <Compile Include="MQTT\MqttClientApplicationMessage.cs" />
+    <Compile Include="MQTT\MqttConnectionOptions.cs" />
+    <Compile Include="MQTT\MqttControlMessage.cs" />
+    <Compile Include="MQTT\MqttCredential.cs" />
+    <Compile Include="MQTT\MqttHelper.cs" />
+    <Compile Include="MQTT\MqttPublishMessage.cs" />
+    <Compile Include="MQTT\MqttQualityOfServiceLevel.cs" />
+    <Compile Include="MQTT\MqttServer.cs" />
+    <Compile Include="MQTT\MqttSession.cs" />
+    <Compile Include="MQTT\MqttSubscribeMessage.cs" />
+    <Compile Include="MQTT\MqttSyncClient.cs" />
+    <Compile Include="MQTT\MqttSyncClientPool.cs" />
+    <Compile Include="MQTT\MqttRpcApiInfo.cs" />
+    <Compile Include="NamespaceDoc.cs" />
+    <Compile Include="Profinet\AllenBradley\AbStructHandle.cs" />
+    <Compile Include="Profinet\AllenBradley\AbTagItem.cs" />
+    <Compile Include="Profinet\AllenBradley\AllenBradleyDF1Serial.cs" />
+    <Compile Include="Profinet\AllenBradley\AllenBradleyHelper.cs" />
+    <Compile Include="Profinet\AllenBradley\AllenBradleyItemValue.cs" />
+    <Compile Include="Profinet\AllenBradley\AllenBradleyMicroCip.cs" />
+    <Compile Include="Profinet\AllenBradley\AllenBradleyNet.cs" />
+    <Compile Include="Profinet\AllenBradley\AllenBradleyServer.cs" />
+    <Compile Include="Profinet\AllenBradley\AllenBradleySLCNet.cs" />
+    <Compile Include="Profinet\Beckhoff\AdsDeviceInfo.cs" />
+    <Compile Include="Profinet\Beckhoff\AmsTcpHeaderFlags.cs" />
+    <Compile Include="Profinet\Beckhoff\BeckhoffAdsNet.cs" />
+    <Compile Include="Profinet\Beckhoff\BeckhoffAdsServer.cs" />
+    <Compile Include="Profinet\Beckhoff\BeckhoffCommandId.cs" />
+    <Compile Include="Profinet\Delta\DeltaDvpSerialAscii.cs" />
+    <Compile Include="Profinet\Delta\DeltaHelper.cs" />
+    <Compile Include="Profinet\Delta\DeltaDvpSerial.cs" />
+    <Compile Include="Profinet\Delta\DeltaDvpTcpNet.cs" />
+    <Compile Include="Profinet\FATEK\FatekProgram.cs" />
+    <Compile Include="Profinet\FATEK\FatekProgramHelper.cs" />
+    <Compile Include="Profinet\FATEK\FatekProgramOverTcp.cs" />
+    <Compile Include="Profinet\Freedom\FreedomSerial.cs" />
+    <Compile Include="Profinet\Freedom\FreedomTcpNet.cs" />
+    <Compile Include="Profinet\Freedom\FreedomUdpNet.cs" />
+    <Compile Include="Profinet\Fuji\FujiCommandSettingType.cs" />
+    <Compile Include="Profinet\Fuji\FujiCommandSettingTypeServer.cs" />
+    <Compile Include="Profinet\Fuji\FujiSPB.cs" />
+    <Compile Include="Profinet\Fuji\FujiSPBHelper.cs" />
+    <Compile Include="Profinet\Fuji\FujiSPHNet.cs" />
+    <Compile Include="Profinet\Fuji\FujiSPBOverTcp.cs" />
+    <Compile Include="Profinet\Fuji\FujiSPBServer.cs" />
+    <Compile Include="Profinet\Fuji\FujiSPHServer.cs" />
+    <Compile Include="Profinet\Geniitek\VibrationSensorActualValue.cs" />
+    <Compile Include="Profinet\Geniitek\VibrationSensorClient.cs" />
+    <Compile Include="Profinet\Geniitek\VibrationSensorLongMessage.cs" />
+    <Compile Include="Profinet\Geniitek\VibrationSensorPeekValue.cs" />
+    <Compile Include="Profinet\Geniitek\VibrationSensorShortMessage.cs" />
+    <Compile Include="Profinet\GE\GeHelper.cs" />
+    <Compile Include="Profinet\GE\GeSRTPNet.cs" />
+    <Compile Include="Profinet\GE\GeSRTPServer.cs" />
+    <Compile Include="Profinet\IDCard\IdentityCard.cs" />
+    <Compile Include="Profinet\IDCard\SAMSerial.cs" />
+    <Compile Include="Profinet\IDCard\SAMTcpNet.cs" />
+    <Compile Include="Profinet\Inovance\InovanceHelper.cs" />
+    <Compile Include="Profinet\Inovance\InovanceSerial.cs" />
+    <Compile Include="Profinet\Inovance\InovanceSerialOverTcp.cs" />
+    <Compile Include="Profinet\Inovance\InovanceSeries.cs" />
+    <Compile Include="Profinet\Inovance\InovanceTcpNet.cs" />
+    <Compile Include="Profinet\Keyence\IKeyenceSR2000Series.cs" />
+    <Compile Include="Profinet\Keyence\KeyenceDataType.cs" />
+    <Compile Include="Profinet\Keyence\KeyenceMcAsciiNet.cs" />
+    <Compile Include="Profinet\Keyence\KeyenceMcNet.cs" />
+    <Compile Include="Profinet\Keyence\KeyenceNanoHelper.cs" />
+    <Compile Include="Profinet\Keyence\KeyenceNanoSerial.cs" />
+    <Compile Include="Profinet\Keyence\KeyenceNanoSerialOverTcp.cs" />
+    <Compile Include="Profinet\Keyence\KeyenceNanoServer.cs" />
+    <Compile Include="Profinet\Keyence\KeyencePLCS.cs" />
+    <Compile Include="Profinet\Keyence\KeyenceSR2000Helper.cs" />
+    <Compile Include="Profinet\Keyence\KeyenceSR2000Serial.cs" />
+    <Compile Include="Profinet\Keyence\KeyenceSR2000SeriesTcp.cs" />
+    <Compile Include="Profinet\Knx\KnxCode.cs" />
+    <Compile Include="Profinet\Knx\KnxUdp.cs" />
+    <Compile Include="Profinet\LSIS\Helper\XGBCnetHelper.cs" />
+    <Compile Include="Profinet\LSIS\LSCpuInfo.cs" />
+    <Compile Include="Profinet\LSIS\LSisServer.cs" />
+    <Compile Include="Profinet\LSIS\XGBCnet.cs" />
+    <Compile Include="Profinet\LSIS\XGBCnetOverTcp.cs" />
+    <Compile Include="Profinet\LSIS\XGBFastEnet.cs" />
+    <Compile Include="Profinet\LSIS\XGKCnet.cs" />
+    <Compile Include="Profinet\LSIS\XGKFastEnet.cs" />
+    <Compile Include="Profinet\Melsec\Helper\IReadWriteA3C.cs" />
+    <Compile Include="Profinet\Melsec\Helper\IReadWriteMc.cs" />
+    <Compile Include="Profinet\Melsec\Helper\McType.cs" />
+    <Compile Include="Profinet\Melsec\Helper\McAsciiHelper.cs" />
+    <Compile Include="Profinet\Melsec\Helper\McBinaryHelper.cs" />
+    <Compile Include="Profinet\Melsec\Helper\McHelper.cs" />
+    <Compile Include="Profinet\Melsec\Helper\MelsecA3CNetHelper.cs" />
+    <Compile Include="Profinet\Melsec\Helper\MelsecFxSerialHelper.cs" />
+    <Compile Include="Profinet\Melsec\MelsecA1EAsciiNet.cs" />
+    <Compile Include="Profinet\Melsec\MelsecA1EDataType.cs" />
+    <Compile Include="Profinet\Melsec\MelsecA1ENet.cs" />
+    <Compile Include="Profinet\Melsec\MelsecA3CNet.cs" />
+    <Compile Include="Profinet\Melsec\MelsecA3CNetOverTcp.cs" />
+    <Compile Include="Profinet\Melsec\MelsecA3CServer.cs" />
+    <Compile Include="Profinet\Melsec\MelsecCipNet.cs" />
+    <Compile Include="Profinet\Melsec\MelsecFxLinks.cs" />
+    <Compile Include="Profinet\Melsec\MelsecFxLinksOverTcp.cs" />
+    <Compile Include="Profinet\Melsec\MelsecFxSerialOverTcp.cs" />
+    <Compile Include="Profinet\Melsec\MelsecHelper.cs" />
+    <Compile Include="Profinet\Melsec\MelsecMcAsciiUdp.cs" />
+    <Compile Include="Profinet\Melsec\MelsecMcAsciiNet.cs" />
+    <Compile Include="Profinet\Melsec\MelsecMcDataType.cs" />
+    <Compile Include="Profinet\Melsec\MelsecMcRNet.cs" />
+    <Compile Include="Profinet\Melsec\MelsecA1EServer.cs" />
+    <Compile Include="Profinet\Melsec\MelsecMcUdp.cs" />
+    <Compile Include="Profinet\Melsec\MelsecMcNet.cs" />
+    <Compile Include="Profinet\Melsec\MelsecMcServer.cs" />
+    <Compile Include="Profinet\Melsec\MelsecMcUdpServer.cs" />
+    <Compile Include="Profinet\Melsec\MelsecFxSerial.cs" />
+    <Compile Include="Profinet\Melsec\NamespaceDoc.cs" />
+    <Compile Include="Profinet\Omron\OmronCipNet.cs" />
+    <Compile Include="Profinet\Omron\OmronConnectedCipNet.cs" />
+    <Compile Include="Profinet\Omron\OmronCpuUnitData.cs" />
+    <Compile Include="Profinet\Omron\OmronCpuUnitStatus.cs" />
+    <Compile Include="Profinet\Omron\OmronFinsDataType.cs" />
+    <Compile Include="Profinet\Omron\OmronFinsNet.cs" />
+    <Compile Include="Profinet\Omron\OmronFinsNetHelper.cs" />
+    <Compile Include="Profinet\Omron\OmronFinsServer.cs" />
+    <Compile Include="Profinet\Omron\OmronFinsUdp.cs" />
+    <Compile Include="Profinet\Omron\OmronFinsUdpServer.cs" />
+    <Compile Include="Profinet\Omron\OmronHostLink.cs" />
+    <Compile Include="Profinet\Omron\OmronHostLinkCMode.cs" />
+    <Compile Include="Profinet\Omron\OmronHostLinkCModeOverTcp.cs" />
+    <Compile Include="Profinet\Omron\OmronHostLinkOverTcp.cs" />
+    <Compile Include="Profinet\Omron\OmronHostLinkServer.cs" />
+    <Compile Include="Profinet\OpenProtocol\OpenProtocolNet.cs" />
+    <Compile Include="Profinet\Panasonic\PanasonicHelper.cs" />
+    <Compile Include="Profinet\Panasonic\PanasonicMcNet.cs" />
+    <Compile Include="Profinet\Panasonic\PanasonicMewtocol.cs" />
+    <Compile Include="Profinet\Panasonic\PanasonicMewtocolOverTcp.cs" />
+    <Compile Include="Profinet\Panasonic\PanasonicMewtocolServer.cs" />
+    <Compile Include="Profinet\Sick\SickIcrTcpServer.cs" />
+    <Compile Include="Profinet\Siemens\Helper\SiemensPPIHelper.cs" />
+    <Compile Include="Profinet\Siemens\SiemensDateTime.cs" />
+    <Compile Include="Profinet\Siemens\SiemensFetchWriteNet.cs" />
+    <Compile Include="Profinet\Siemens\SiemensFetchWriteServer.cs" />
+    <Compile Include="Profinet\Siemens\SiemensMPI.cs" />
+    <Compile Include="Profinet\Siemens\SiemensPLCS.cs" />
+    <Compile Include="Profinet\Siemens\SiemensPPI.cs" />
+    <Compile Include="Profinet\Siemens\SiemensPPIOverTcp.cs" />
+    <Compile Include="Profinet\Siemens\SiemensS7Net.cs" />
+    <Compile Include="Profinet\Siemens\SiemensS7Server.cs" />
+    <Compile Include="Profinet\Siemens\SiemensWebApi.cs" />
+    <Compile Include="Profinet\Toledo\ToledoSerial.cs" />
+    <Compile Include="Profinet\Toledo\ToledoStandardData.cs" />
+    <Compile Include="Profinet\Toledo\ToledoTcpServer.cs" />
+    <Compile Include="Profinet\XINJE\XinJEHelper.cs" />
+    <Compile Include="Profinet\XINJE\XinJESerialOverTcp.cs" />
+    <Compile Include="Profinet\XINJE\XinJESeries.cs" />
+    <Compile Include="Profinet\XINJE\XinJESerial.cs" />
+    <Compile Include="Profinet\XINJE\XinJETcpNet.cs" />
+    <Compile Include="Profinet\Yamatake\DigitronCPL.cs" />
+    <Compile Include="Profinet\Yamatake\DigitronCPLOverTcp.cs" />
+    <Compile Include="Profinet\Yamatake\DigitronCPLServer.cs" />
+    <Compile Include="Profinet\Yamatake\Helper\DigitronCPLHelper.cs" />
+    <Compile Include="Profinet\YASKAWA\MemobusTcpNet.cs" />
+    <Compile Include="Profinet\Yokogawa\YokogawaLinkHelper.cs" />
+    <Compile Include="Profinet\Yokogawa\YokogawaLinkServer.cs" />
+    <Compile Include="Profinet\Yokogawa\YokogawaLinkTcp.cs" />
+    <Compile Include="Profinet\Yokogawa\YokogawaSystemInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Enthernet\Redis\RedisClient.cs" />
+    <Compile Include="Robot\ABB\ABBWebApiClient.cs" />
+    <Compile Include="Robot\ABB\ABBWebApiServer.cs" />
+    <Compile Include="Robot\EFORT\EfortData.cs" />
+    <Compile Include="Robot\EFORT\ER7BC10.cs" />
+    <Compile Include="Robot\EFORT\ER7BC10Previous.cs" />
+    <Compile Include="Robot\FANUC\FanucAlarm.cs" />
+    <Compile Include="Robot\FANUC\FanucData.cs" />
+    <Compile Include="Robot\FANUC\FanucHelper.cs" />
+    <Compile Include="Robot\FANUC\FanucInterfaceNet.cs" />
+    <Compile Include="Robot\FANUC\FanucPose.cs" />
+    <Compile Include="Robot\FANUC\FanucRobotServer.cs" />
+    <Compile Include="Robot\FANUC\FanucTask.cs" />
+    <Compile Include="Robot\Hyundai\HyundaiData.cs" />
+    <Compile Include="Robot\Hyundai\HyundaiUdpNet.cs" />
+    <Compile Include="Robot\KUKA\KukaAvarProxyNet.cs" />
+    <Compile Include="Robot\KUKA\KukaTcpNet.cs" />
+    <Compile Include="Robot\YAMAHA\YamahaRCX.cs" />
+    <Compile Include="Robot\YASKAWA\YRC1000TcpNet.cs" />
+    <Compile Include="Serial\CheckType.cs" />
+    <Compile Include="Serial\CRCSupport.cs" />
+    <Compile Include="Serial\SerialBase.cs" />
+    <Compile Include="Serial\SerialDeviceBase.cs" />
+    <Compile Include="Serial\SoftLRC.cs" />
+    <Compile Include="StringResources.cs" />
+    <Compile Include="WebSocket\WebSocketClient.cs" />
+    <Compile Include="WebSocket\WebSocketHelper.cs" />
+    <Compile Include="WebSocket\WebSocketMessage.cs" />
+    <Compile Include="WebSocket\WebSocketQANet.cs" />
+    <Compile Include="WebSocket\WebSocketServer.cs" />
+    <Compile Include="WebSocket\WebSocketSession.cs" />
+    <Compile Include="WebSocket\WSOpCode.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BasicFramework\FormAuthorize.resx">
+      <DependentUpon>FormAuthorize.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicFramework\FormPopup.resx">
+      <DependentUpon>FormPopup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicFramework\FormPortraitSelect.resx">
+      <DependentUpon>FormPortraitSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BasicFramework\FormSupport.resx">
+      <DependentUpon>FormSupport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UserBottle.resx">
+      <DependentUpon>UserBottle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UserButton.resx">
+      <DependentUpon>UserButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UserClock.resx">
+      <DependentUpon>UserClock.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UserCurve.resx">
+      <DependentUpon>UserCurve.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UserDrum.resx">
+      <DependentUpon>UserDrum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UserGaugeChart.resx">
+      <DependentUpon>UserGaugeChart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UserLantern.resx">
+      <DependentUpon>UserLantern.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UserPieChart.resx">
+      <DependentUpon>UserPieChart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UserPipe.resx">
+      <DependentUpon>UserPipe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UserSwitch.resx">
+      <DependentUpon>UserSwitch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UserVerticalProgress.resx">
+      <DependentUpon>UserVerticalProgress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogNet\View\FormLogNetView.resx">
+      <DependentUpon>FormLogNetView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogNet\View\LogNetAnalysisControl.resx">
+      <DependentUpon>LogNetAnalysisControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="HslCommunication.snk" />
+    <None Include="imgaes\qrcode_for_gh_319218678954_258.jpg" />
+    <None Include="imgaes\mm_facetoface_collect_qrcode_1525331158525.png" />
+    <None Include="imgaes\WindowsForm_817_16x.png" />
+    <None Include="imgaes\WebFormTemplate_11274_16x_color.png" />
+    <None Include="imgaes\WebForm%28ASPX%29_815_16x.png" />
+    <None Include="imgaes\VirtualMachine.png" />
+    <None Include="imgaes\UseCaseDiagramFile_usecasediagram_13447_16x.png" />
+    <None Include="imgaes\usbcontroller.png" />
+    <None Include="imgaes\TreeView_713.png" />
+    <None Include="imgaes\Textfile_818_16x.png" />
+    <None Include="imgaes\Tag_7213.png" />
+    <None Include="imgaes\Table_748.png" />
+    <None Include="imgaes\TabControl_707.png" />
+    <None Include="imgaes\Structure_507.png" />
+    <None Include="imgaes\Soundfile_461.png" />
+    <None Include="imgaes\PropertyIcon.png" />
+    <None Include="imgaes\Module_648.png" />
+    <None Include="imgaes\Method_636.png" />
+    <None Include="imgaes\ListView_687.png" />
+    <None Include="imgaes\lightningBolt_16xLG.png" />
+    <None Include="imgaes\grid_Data_16xLG.png" />
+    <None Include="imgaes\glasses_16xLG.png" />
+    <None Include="imgaes\Event_594_exp.png" />
+    <None Include="imgaes\Event_594.png" />
+    <None Include="imgaes\Enum_582.png" />
+    <None Include="imgaes\docview_xaml_on_16x16.png" />
+    <None Include="imgaes\Delegate_8339.png" />
+    <None Include="imgaes\Copy_6524.png" />
+    <None Include="imgaes\Cloud_16xLG.png" />
+    <None Include="imgaes\ClassIcon.png" />
+    <None Include="imgaes\Class_489.png" />
+    <None Include="imgaes\brackets_Square_16xMD.png" />
+    <None Include="imgaes\AudioRecording.png" />
+    <None Include="imgaes\asset_progressBar_24x24_on.png" />
+    <None Include="imgaes\alipay.png" />
+    <None Include="imgaes\AddressViewer.png" />
+    <None Include="imgaes\Activity_16xLG.png" />
+    <None Include="imgaes\abstr11.png" />
+    <None Include="imgaes\abstr1.png" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

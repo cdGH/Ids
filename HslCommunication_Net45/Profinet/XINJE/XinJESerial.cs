@@ -1,0 +1,933 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using HslCommunication.ModBus;
+using HslCommunication.Reflection;
+using HslCommunication;
+using HslCommunication.Core;
+
+namespace HslCommunication.Profinet.XINJE
+{
+	/// <summary>
+	/// 信捷PLC的XC,XD,XL系列的串口通讯类，底层使用ModbusRtu协议实现，每个系列支持的地址类型及范围不一样，详细参考API文档<br />
+	/// XC, XD, XL series serial communication of Xinje PLC, the bottom layer is implemented by ModbusRtu protocol, 
+	/// the address type and range supported by each series are different, please refer to the API document for details
+	/// </summary>
+	/// <remarks>
+	/// 对于XC系列适用于XC1/XC2/XC3/XC5/XCM/XCC系列，线圈支持X,Y,S,M,T,C，寄存器支持D,F,E,T,C<br />
+	/// 对于XD,XL系列适用于XD1/XD2/XD3/XD5/XDM/XDC/XD5E/XDME/XDH/XL1/XL3/XL5/XL5E/XLME，
+	/// 线圈支持X,Y,S,M,SM,T,C,ET,SEM,HM,HS,HT,HC,HSC 寄存器支持D,ID,QD,SD,TD,CD,ETD,HD,HSD,HTD,HCD,HSCD,FD,SFD,FS<br />
+	/// </remarks>
+	/// 地址可以携带站号访问，例如 s=2;M100
+	/// <example>
+	/// 以下是XC1/XC2/XC3/XC5/XCM/XCC系列的地址内容
+	/// <list type="table">
+	///   <listheader>
+	///     <term>地址名称</term>
+	///     <term>地址代号</term>
+	///     <term>地址范围</term>
+	///     <term>地址进制</term>
+	///     <term>备注</term>
+	///   </listheader>
+	///   <item>
+	///     <term>内部继电器</term>
+	///     <term>M</term>
+	///     <term>M0-M7999，M8000-M8511</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>流程继电器</term>
+	///     <term>S</term>
+	///     <term>S0-S1023</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>定时器</term>
+	///     <term>T</term>
+	///     <term>T0-T618</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>计数器</term>
+	///     <term>C</term>
+	///     <term>C0-C634</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>输入</term>
+	///     <term>X</term>
+	///     <term>X0-X1037 或者X0.0-X103.7</term>
+	///     <term>8</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>输出</term>
+	///     <term>Y</term>
+	///     <term>Y0-Y1037 或者Y0.0-Y103.7</term>
+	///     <term>8</term>
+	///     <term></term>
+	///   </item>
+	/// </list>
+	/// 寄存器、 字元件、字变量地址定义：
+	/// <list type="table">
+	///   <listheader>
+	///     <term>地址名称</term>
+	///     <term>地址代号</term>
+	///     <term>地址范围</term>
+	///     <term>地址进制</term>
+	///     <term>备注</term>
+	///   </listheader>
+	///   <item>
+	///     <term>数据寄存器</term>
+	///     <term>D</term>
+	///     <term>D0-D8511</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>Flash寄存器</term>
+	///     <term>F</term>
+	///     <term>F0-F5000;F8000-F8511</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>扩展内部寄存器</term>
+	///     <term>E</term>
+	///     <term>E0-E36863</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>定时器</term>
+	///     <term>T</term>
+	///     <term>T0-T618</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>计数器</term>
+	///     <term>C</term>
+	///     <term>C0-C634</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	/// </list>
+	/// <c>我们再来看看XP系列，就是少了一点访问的数据类型，然后，地址范围也不一致</c><br />
+	/// 线圈、 位元件、位变量地址定义
+	/// <list type="table">
+	///   <listheader>
+	///     <term>地址名称</term>
+	///     <term>地址代号</term>
+	///     <term>地址范围</term>
+	///     <term>地址进制</term>
+	///     <term>备注</term>
+	///   </listheader>
+	///   <item>
+	///     <term>中间寄电器</term>
+	///     <term>M</term>
+	///     <term>M0-M3071，M8000-M8511</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>S</term>
+	///     <term>S0-S999</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>定时器</term>
+	///     <term>T</term>
+	///     <term>T0-T255</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>计数器</term>
+	///     <term>C</term>
+	///     <term>C0-C255</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>输入</term>
+	///     <term>X</term>
+	///     <term>X0-X377 或者X0.0-X37.7</term>
+	///     <term>8</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>输出</term>
+	///     <term>Y</term>
+	///     <term>Y0-Y377 或者Y0.0-Y37.7</term>
+	///     <term>8</term>
+	///     <term></term>
+	///   </item>
+	/// </list>
+	/// 寄存器、 字元件、字变量地址定义：
+	/// <list type="table">
+	///   <listheader>
+	///     <term>地址名称</term>
+	///     <term>地址代号</term>
+	///     <term>地址范围</term>
+	///     <term>地址进制</term>
+	///     <term>备注</term>
+	///   </listheader>
+	///   <item>
+	///     <term>数据寄存器</term>
+	///     <term>D</term>
+	///     <term>D0-D8511</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>定时器</term>
+	///     <term>T</term>
+	///     <term>T0-T255</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>计数器</term>
+	///     <term>C</term>
+	///     <term>C0-C199,C200-C255</term>
+	///     <term>10</term>
+	///     <term>其实C200-C255的计数器是32位的</term>
+	///   </item>
+	/// </list>
+	/// <c>我们再来看看XD1、 XD2、 XD3、 XL1、 XL3 系列，支持的地址类型和地址范围如下：</c><br />
+	/// 线圈、 位元件、位变量地址定义
+	/// <list type = "table" >
+	///   <listheader>
+	///     <term>地址名称</term>
+	///     <term>地址代号</term>
+	///     <term>地址范围</term>
+	///     <term>地址进制</term>
+	///     <term>备注</term>
+	///   </listheader>
+	///   <item>
+	///     <term>中间寄电器</term>
+	///     <term>M</term>
+	///     <term>M0-M7999</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>输入</term>
+	///     <term>X</term>
+	///     <term>X0-X77,X10000-X11177,X20000-X20177,X30000-X30077 或者X0.0-X37.7</term>
+	///     <term>8</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>输出</term>
+	///     <term>Y</term>
+	///     <term>Y0-Y77,Y10000-Y11177,Y20000-Y20177,Y30000-Y30077 或者Y0.0-Y37.7</term>
+	///     <term>8</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>S</term>
+	///     <term>S0-S1023</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>SM</term>
+	///     <term>SM0-SM2047</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>定时器</term>
+	///     <term>T</term>
+	///     <term>T0-T575</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>计数器</term>
+	///     <term>C</term>
+	///     <term>C0-C575</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>ET</term>
+	///     <term>ET0-ET31</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>SEM</term>
+	///     <term>SEM0-SEM31</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HM</term>
+	///     <term>HM0-HM959</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HS</term>
+	///     <term>HS0-HS127</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HT</term>
+	///     <term>HT0-HT95</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HC</term>
+	///     <term>HT0-HC95</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HSC</term>
+	///     <term>HST0-HSC31</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	/// </list>
+	/// 寄存器、 字元件、字变量地址定义：
+	/// <list type="table">
+	///   <listheader>
+	///     <term>地址名称</term>
+	///     <term>地址代号</term>
+	///     <term>地址范围</term>
+	///     <term>地址进制</term>
+	///     <term>备注</term>
+	///   </listheader>
+	///   <item>
+	///     <term>数据寄存器</term>
+	///     <term>D</term>
+	///     <term>D0-D7999</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>ID</term>
+	///     <term>ID0-ID99，ID10000-ID10999，ID20000-ID20199,ID30000-ID30099</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>QD</term>
+	///     <term>QD0-QD99，QD10000-QD10999，QD20000-QD20199,QD30000-QD30099</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>SD</term>
+	///     <term>SD0-SD2047</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>TD</term>
+	///     <term>TD0-TD575</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>CD</term>
+	///     <term>CD0-CD575</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>ETD</term>
+	///     <term>ETD0-ETD31</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HD</term>
+	///     <term>HD0-HD999</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HSD</term>
+	///     <term>HSD0-HSD499</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HTD</term>
+	///     <term>HTD0-HTD95</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HCD</term>
+	///     <term>HCD0-HCD95</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HSCD</term>
+	///     <term>HSCD0-HSCD31</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>FD</term>
+	///     <term>FD0-FD5119</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>SFD</term>
+	///     <term>SFD0-SFD1999</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>FSD</term>
+	///     <term>FS0-FS47</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	/// </list>
+	/// <c>我们再来看看XD5、 XDM、 XDC、 XD5E、 XDME、 XL5、 XL5E、 XLME 系列，支持的地址类型和地址范围如下：</c><br />
+	/// 线圈、 位元件、位变量地址定义
+	/// <list type = "table" >
+	///   <listheader>
+	///     <term>地址名称</term>
+	///     <term>地址代号</term>
+	///     <term>地址范围</term>
+	///     <term>地址进制</term>
+	///     <term>备注</term>
+	///   </listheader>
+	///   <item>
+	///     <term>中间寄电器</term>
+	///     <term>M</term>
+	///     <term>M0-M20479</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>输入</term>
+	///     <term>X</term>
+	///     <term>X0-X77,X10000-X11777,X20000-X20177,X30000-X30077 或者X0.0-X37.7</term>
+	///     <term>8</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>输出</term>
+	///     <term>Y</term>
+	///     <term>Y0-Y77,Y10000-Y11777,Y20000-Y20177,Y30000-Y30077 或者Y0.0-Y37.7</term>
+	///     <term>8</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>S</term>
+	///     <term>S0-S7999</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>SM</term>
+	///     <term>SM0-SM4095</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>定时器</term>
+	///     <term>T</term>
+	///     <term>T0-T4095</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>计数器</term>
+	///     <term>C</term>
+	///     <term>C0-C4095</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>ET</term>
+	///     <term>ET0-ET39</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>SEM</term>
+	///     <term>SEM0-SEM127</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HM</term>
+	///     <term>HM0-HM6143</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HS</term>
+	///     <term>HS0-HS999</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HT</term>
+	///     <term>HT0-HT1023</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HC</term>
+	///     <term>HT0-HC1023</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HSC</term>
+	///     <term>HST0-HSC39</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	/// </list>
+	/// 寄存器、 字元件、字变量地址定义：
+	/// <list type="table">
+	///   <listheader>
+	///     <term>地址名称</term>
+	///     <term>地址代号</term>
+	///     <term>地址范围</term>
+	///     <term>地址进制</term>
+	///     <term>备注</term>
+	///   </listheader>
+	///   <item>
+	///     <term>数据寄存器</term>
+	///     <term>D</term>
+	///     <term>D0-D20479</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>ID</term>
+	///     <term>ID0-ID99，ID10000-ID11599，ID20000-ID20199,ID30000-ID30099</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>QD</term>
+	///     <term>QD0-QD99，QD10000-QD11599，QD20000-QD20199,QD30000-QD30099</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>SD</term>
+	///     <term>SD0-SD4095</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>TD</term>
+	///     <term>TD0-TD4095</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>CD</term>
+	///     <term>CD0-CD4095</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>ETD</term>
+	///     <term>ETD0-ETD39</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HD</term>
+	///     <term>HD0-HD6143</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HSD</term>
+	///     <term>HSD0-HSD1023</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HTD</term>
+	///     <term>HTD0-HTD1023</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HCD</term>
+	///     <term>HCD0-HCD1023</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HSCD</term>
+	///     <term>HSCD0-HSCD39</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>FD</term>
+	///     <term>FD0-FD8191</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>SFD</term>
+	///     <term>SFD0-SFD4095</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>FSD</term>
+	///     <term>FS0-FS47</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	/// </list>
+	/// <c>我们再来看看XDH  系列，支持的地址类型和地址范围如下：</c><br />
+	/// 线圈、 位元件、位变量地址定义
+	/// <list type = "table" >
+	///   <listheader>
+	///     <term>地址名称</term>
+	///     <term>地址代号</term>
+	///     <term>地址范围</term>
+	///     <term>地址进制</term>
+	///     <term>备注</term>
+	///   </listheader>
+	///   <item>
+	///     <term>中间寄电器</term>
+	///     <term>M</term>
+	///     <term>M0-M20479</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>输入</term>
+	///     <term>X</term>
+	///     <term>X0-X77,X10000-X11777,X20000-X20077 或者X0.0-X37.7</term>
+	///     <term>8</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>输出</term>
+	///     <term>Y</term>
+	///     <term>Y0-Y77,Y10000-Y11777,Y20000-Y20077 或者Y0.0-Y37.7</term>
+	///     <term>8</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>S</term>
+	///     <term>S0-S7999</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>SM</term>
+	///     <term>SM0-SM4095</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>定时器</term>
+	///     <term>T</term>
+	///     <term>T0-T4095</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term>计数器</term>
+	///     <term>C</term>
+	///     <term>C0-C4095</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>ET</term>
+	///     <term>ET0-ET39</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>SEM</term>
+	///     <term>SEM0-SEM127</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HM</term>
+	///     <term>HM0-HM6143</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HS</term>
+	///     <term>HS0-HS999</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HT</term>
+	///     <term>HT0-HT1023</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HC</term>
+	///     <term>HT0-HC1023</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HSC</term>
+	///     <term>HST0-HSC39</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	/// </list>
+	/// 寄存器、 字元件、字变量地址定义：
+	/// <list type="table">
+	///   <listheader>
+	///     <term>地址名称</term>
+	///     <term>地址代号</term>
+	///     <term>地址范围</term>
+	///     <term>地址进制</term>
+	///     <term>备注</term>
+	///   </listheader>
+	///   <item>
+	///     <term>数据寄存器</term>
+	///     <term>D</term>
+	///     <term>D0-D20479</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>ID</term>
+	///     <term>ID0-ID99，ID10000-ID11599，ID20000-ID20099</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>QD</term>
+	///     <term>QD0-QD99，QD10000-QD11599，QD20000-QD20099</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>SD</term>
+	///     <term>SD0-SD4095</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>TD</term>
+	///     <term>TD0-TD4095</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>CD</term>
+	///     <term>CD0-CD4095</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>ETD</term>
+	///     <term>ETD0-ETD39</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HD</term>
+	///     <term>HD0-HD6143</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HSD</term>
+	///     <term>HSD0-HSD1023</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HTD</term>
+	///     <term>HTD0-HTD1023</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HCD</term>
+	///     <term>HCD0-HCD1023</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>HSCD</term>
+	///     <term>HSCD0-HSCD39</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>FD</term>
+	///     <term>FD0-FD8191</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>SFD</term>
+	///     <term>SFD0-SFD4095</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	///   <item>
+	///     <term></term>
+	///     <term>FSD</term>
+	///     <term>FS0-FS47</term>
+	///     <term>10</term>
+	///     <term></term>
+	///   </item>
+	/// </list>
+	/// </example>
+	public class XinJESerial : ModbusRtu
+	{
+		#region Constructor
+
+		/// <summary>
+		/// 实例化一个默认的对象
+		/// </summary>
+		public XinJESerial( ) : base( ) { Series = XinJESeries.XC; }
+
+		/// <summary>
+		/// 指定客户端自己的站号来初始化<br />
+		/// Specify the client's own station number to initialize
+		/// </summary>
+		/// <param name="station">客户端自身的站号</param>
+		public XinJESerial( byte station = 0x01 ) : base( station ) { Series = XinJESeries.XC; }
+
+		/// <summary>
+		/// 通过指定站号以及PLC的系列来实例化一个新的对象<br />
+		/// Instantiate a new object by specifying the station number and PLC series
+		/// </summary>
+		/// <param name="series">PLC的系列</param>
+		/// <param name="station">站号信息</param>
+		public XinJESerial( XinJESeries series, byte station = 0x01 ) : base( station ) 
+		{ 
+			Series = series; 
+		}
+
+		#endregion
+
+		#region Public Properties
+
+		/// <summary>
+		/// 获取或设置当前的信捷PLC的系列，默认XC系列
+		/// </summary>
+		public XinJESeries Series { get; set; }
+
+		#endregion
+
+		#region Override
+
+		/// <inheritdoc/>
+		public override OperateResult<string> TranslateToModbusAddress( string address, byte modbusCode )
+		{
+			return XinJEHelper.PraseXinJEAddress( this.Series, address, modbusCode );
+		}
+
+		#endregion
+
+		#region Object Override
+
+		/// <inheritdoc/>
+		public override string ToString( ) => $"XinJESerial<{Series}>[{PortName}:{BaudRate}]";
+
+		#endregion
+	}
+}
