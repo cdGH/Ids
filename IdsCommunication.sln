@@ -7,8 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdsProject", "IdsProject", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HslCommunication_Net45", "HslCommunication_Net45\HslCommunication_Net45.csproj", "{7F8029DA-1B94-4B1D-B91F-5B21DBF2F3A2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6A6058C0-601D-43F3-BC31-9425D3DD0EE3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdsCommunication", "IdsProject\IdsCommunication\IdsCommunication.csproj", "{3878075B-B8D7-4090-B094-29622581442F}"
 EndProject
 Global
