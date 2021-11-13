@@ -101,18 +101,6 @@
     <Compile Include="DemoControl\FormCurveMonitor.Designer.cs">
       <DependentUpon>FormCurveMonitor.cs</DependentUpon>
     </Compile>
-    <Compile Include="DemoControl\UserControlCurve.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="DemoControl\UserControlCurve.Designer.cs">
-      <DependentUpon>UserControlCurve.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DemoControl\UserControlHead.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="DemoControl\UserControlHead.Designer.cs">
-      <DependentUpon>UserControlHead.cs</DependentUpon>
-    </Compile>
     <Compile Include="DemoControl\UserControlReadWriteOp.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -160,32 +148,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings1.settings</DependentUpon>
     </Compile>
-    <Compile Include="WebSocket\FormWebsocketQANet.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WebSocket\FormWebsocketQANet.Designer.cs">
-      <DependentUpon>FormWebsocketQANet.cs</DependentUpon>
-    </Compile>
-    <Compile Include="WebSocket\FormWebsocketClient.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WebSocket\FormWebsocketClient.Designer.cs">
-      <DependentUpon>FormWebsocketClient.cs</DependentUpon>
-    </Compile>
-    <Compile Include="WebSocket\FormWebsocketServer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="WebSocket\FormWebsocketServer.Designer.cs">
-      <DependentUpon>FormWebsocketServer.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="DemoControl\FormCurveMonitor.resx">
       <DependentUpon>FormCurveMonitor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DemoControl\UserControlCurve.resx">
-      <DependentUpon>UserControlCurve.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DemoControl\UserControlHead.resx">
-      <DependentUpon>UserControlHead.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DemoControl\UserControlReadWriteOp.resx">
       <DependentUpon>UserControlReadWriteOp.cs</DependentUpon>
@@ -206,15 +170,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WebSocket\FormWebsocketQANet.resx">
-      <DependentUpon>FormWebsocketQANet.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WebSocket\FormWebsocketClient.resx">
-      <DependentUpon>FormWebsocketClient.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WebSocket\FormWebsocketServer.resx">
-      <DependentUpon>FormWebsocketServer.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />
@@ -425,6 +380,8 @@
       <Name>HslCommunication_Net45</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Page\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

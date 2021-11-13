@@ -61,19 +61,6 @@ namespace HslCommunicationDemo
 				button1.Text = "Connect";
 				button2.Text = "Disconnect";
 
-				label11.Text = "Address:";
-				label12.Text = "length:";
-				button25.Text = "Bulk Read";
-				label13.Text = "Results:";
-				label16.Text = "Message:";
-				label14.Text = "Results:";
-				button26.Text = "Read";
-
-				groupBox3.Text = "Bulk Read test";
-				groupBox4.Text = "Message reading test, hex string needs to be filled in";
-				groupBox5.Text = "Special function test";
-
-				button3.Text = "Pressure test, r/w 3,000s";
 				comboBox1.DataSource = new string[] { "None", "Odd", "Even" };
 			}
 		}
@@ -154,109 +141,11 @@ namespace HslCommunicationDemo
 		}
 		
 
-		#endregion
-
-		#region 批量读取测试
-
-		private void button25_Click( object sender, EventArgs e )
-		{
-			try
-			{
-				OperateResult<byte[]> read = panasonicMewtocol.Read( textBox6.Text , ushort.Parse( textBox9.Text ) );
-				if (read.IsSuccess)
-				{
-					textBox10.Text = "结果：" + HslCommunication.BasicFramework.SoftBasic.ByteToHexString( read.Content );
-				}
-				else
-				{
-					MessageBox.Show( "读取失败：" + read.ToMessageShowString( ) );
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show( "读取失败：" + ex.Message );
-			}
-		}
-
-
-
-		#endregion
-
-		#region 报文读取测试
-
-
-		private void button26_Click( object sender, EventArgs e )
-		{
-			try
-			{
-				OperateResult<byte[]> read = panasonicMewtocol.ReadFromCoreServer( HslCommunication.Serial.SoftCRC16.CRC16(HslCommunication.BasicFramework.SoftBasic.HexStringToBytes( textBox13.Text )) );
-				if (read.IsSuccess)
-				{
-					textBox11.Text = "结果：" + HslCommunication.BasicFramework.SoftBasic.ByteToHexString( read.Content );
-				}
-				else
-				{
-					MessageBox.Show( "读取失败：" + read.ToMessageShowString( ) );
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show( "读取失败：" + ex.Message );
-			}
-		}
-
+		
 
 		#endregion
 		
-		#region 压力测试
-
-		private void button4_Click( object sender, EventArgs e )
-		{
-			PressureTest2( );
-		}
-
-		private int thread_status = 0;
-		private int failed = 0;
-		private DateTime thread_time_start = DateTime.Now;
-		// 压力测试，开3个线程，每个线程进行读写操作，看使用时间
-		private void PressureTest2( )
-		{
-			thread_status = 3;
-			failed = 0;
-			thread_time_start = DateTime.Now;
-			new Thread( new ThreadStart( thread_test2 ) ) { IsBackground = true, }.Start( );
-			new Thread( new ThreadStart( thread_test2 ) ) { IsBackground = true, }.Start( );
-			new Thread( new ThreadStart( thread_test2 ) ) { IsBackground = true, }.Start( );
-			button3.Enabled = false;
-		}
-
-		private void thread_test2( )
-		{
-			int count = 500;
-			while (count > 0)
-			{
-				if (!panasonicMewtocol.Write( "100", (short)1234 ).IsSuccess) failed++;
-				if (!panasonicMewtocol.ReadInt16( "100" ).IsSuccess) failed++;
-				count--;
-			}
-			thread_end( );
-		}
-
-		private void thread_end( )
-		{
-			if (Interlocked.Decrement( ref thread_status ) == 0)
-			{
-				// 执行完成
-				Invoke( new Action( ( ) =>
-				{
-					button3.Enabled = true;
-					MessageBox.Show( "耗时：" + (DateTime.Now - thread_time_start).TotalSeconds + Environment.NewLine + "失败次数：" + failed );
-				} ) );
-			}
-		}
-		
-		#endregion
-
+	
 		#region Test Function
 		
 		private void Test1()
@@ -323,5 +212,10 @@ namespace HslCommunicationDemo
 		{
 			userControlHead1_SaveConnectEvent( sender, e );
 		}
-	}
+
+        private void userControlReadWriteOp1_Load(object sender, EventArgs e)
+        {
+
+        }
+    }
 }
