@@ -115,6 +115,7 @@
     <Compile Include="FormIndex.Designer.cs">
       <DependentUpon>FormIndex.cs</DependentUpon>
     </Compile>
+    <Compile Include="Page\Class1.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -374,9 +375,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Page\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\HslCommunication_Net45\HslCommunication_Net45.csproj">
       <Project>{7F8029DA-1B94-4B1D-B91F-5B21DBF2F3A2}</Project>
