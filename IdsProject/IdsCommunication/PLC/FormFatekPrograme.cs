@@ -236,15 +236,6 @@ namespace HslCommunicationDemo
 
 		private void test6( )
 		{
-			OperateResult<UserType> read = fatekProgram.ReadCustomer<UserType>( "D100" );
-			if (read.IsSuccess)
-			{
-				UserType value = read.Content;
-			}
-			// write value
-			fatekProgram.WriteCustomer( "D100", new UserType( ) );
-
-			fatekProgram.LogNet = new HslCommunication.LogNet.LogNetSingle( Application.StartupPath + "\\Logs.txt" );
 
 		}
 

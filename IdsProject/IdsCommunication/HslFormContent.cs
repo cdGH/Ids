@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using HslCommunicationDemo.Control;
 
 namespace HslCommunicationDemo
 {
@@ -35,20 +34,7 @@ namespace HslCommunicationDemo
 			{
 				if (xElement == null)
 				{
-					using (FormInputString form = new FormInputString( ))
-					{
-						if (form.ShowDialog( ) == DialogResult.OK)
-						{
-							// 保存连接
-							xElement = new XElement( "Device" );
-							xElement.SetAttributeValue( DemoDeviceList.XmlGuid, Guid.NewGuid( ).ToString( "N" ) );
-							xElement.SetAttributeValue( DemoDeviceList.XmlType, this.GetType( ).Name );
-							xElement.SetAttributeValue( DemoDeviceList.XmlName, form.DeviceAlias );
-							SaveXmlParameter( xElement );
-							FormSelect.Form.AddDeviceList( xElement );
-							MessageBox.Show( "Save Success" );
-						}
-					}
+					
 				}
 				else
 				{
