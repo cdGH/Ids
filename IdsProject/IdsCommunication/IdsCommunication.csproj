@@ -367,6 +367,7 @@
     <Content Include="img\yaskawa.png" />
     <Content Include="img\yokogawa.png" />
     <Content Include="img\zkt.png" />
+    <Content Include="Page\test.txt" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
